@@ -1,1 +1,1 @@
-//A C++ implementation of SPADE algorithm 
+A C++ implementation of SPADE algorithm 

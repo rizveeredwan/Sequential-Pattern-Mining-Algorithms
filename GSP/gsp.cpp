@@ -254,10 +254,12 @@ vector<string> join(int level){
 			if(right==left){
 				//will merge 
 				if(sameItemset){
-					temp=generatedFrequentPatterns[level][i].p;
-					temp[temp.size()-1]=generatedFrequentPatterns[level][j].p[generatedFrequentPatterns[level][j].p.size()-2];
-					temp=temp+"}";
-					joinResults.push_back(temp);
+					if(generatedFrequentPatterns[level][i].p[generatedFrequentPatterns[level][i].p.size()-2] < generatedFrequentPatterns[level][j].p[generatedFrequentPatterns[level][j].p.size()-2]) {
+						temp=generatedFrequentPatterns[level][i].p;
+						temp[temp.size()-1]=generatedFrequentPatterns[level][j].p[generatedFrequentPatterns[level][j].p.size()-2];
+						temp=temp+"}";
+						joinResults.push_back(temp);
+					}
 				}
 				else{
 					temp=generatedFrequentPatterns[level][i].p;

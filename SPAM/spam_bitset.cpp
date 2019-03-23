@@ -3,7 +3,7 @@ using namespace std;
 
 #define MAX_SYMBOL 30
 #define BASE 'a' 
-#define MAX_SEQUENCE_POSSIBLE 10
+#define MAX_SEQUENCE_POSSIBLE 500
 
 
 struct Pattern{
@@ -54,8 +54,17 @@ vector<bitset<MAX_SEQUENCE_POSSIBLE>> sStep(string left, string right){
 					break;
 				}
 			}
-			bitset<MAX_SEQUENCE_POSSIBLE>newLeft((1<<(savePos))-1);
+			bitset<MAX_SEQUENCE_POSSIBLE>newLeft;
+			for(int j=savePos-1;j>=0;j--){
+				newLeft[j]=1;
+			}
 			
+			/*if(left=="{a}" && right == "{a}") {
+				cout<<"save pos = "<<savePos<<endl;
+				cout<<"new left "<<newLeft<<endl;
+				cout<<"v right "<<vRight[i]<<endl; 
+				cout<<"result = "<<(newLeft & vRight[i])<<endl;
+			}*/
 			
 			result.push_back(newLeft & vRight[i]);
 		}
@@ -92,7 +101,8 @@ void lexicographicTree(string pattern,vector<string>validMoves,int minSupCount){
 				S.insert(j);
 			}
 		}
-
+		
+		if(s == "{a}{a}") cout<<S.size()<<endl;
 		
 		if((int)S.size() >= minSupCount){
 			generatedFrequentPatterns.push_back({s,S});
@@ -125,7 +135,8 @@ void lexicographicTree(string pattern,vector<string>validMoves,int minSupCount){
 
 void transactionRead(int minSupCount){
 	//function to read input from file 
-	freopen("../Dataset/in2.txt","r",stdin);
+	// ------------ ../Dataset/in2.txt
+	freopen("../Dataset/spmf_dataset.txt","r",stdin);
 	int n;
 	scanf("%d",&n);
 	string s; 
@@ -142,7 +153,9 @@ void transactionRead(int minSupCount){
 		transactions.push_back(s);
 		temp=split(s);
 		
+		
 		maxEvent=max(maxEvent,(int)temp.size()); //max event possible in a sequence 
+		
 		
 		for(int j=0;j<(int)temp.size();j++){
 			for(int k=0;k<(int)temp[j].size();k++){
@@ -155,7 +168,8 @@ void transactionRead(int minSupCount){
 			
 	}
 	
-	numberOfBit = cnt;
+	numberOfBit = maxEvent;
+	
 	
 	vector<int>power_2;
 	power_2.push_back(0);
@@ -170,6 +184,8 @@ void transactionRead(int minSupCount){
 	}
 	
 	
+	// MAX_SEQUENCE_POSSIBLE must be greater or equal than numberOfBit 
+	assert(MAX_SEQUENCE_POSSIBLE>=numberOfBit);
 	
 	vector<long long int>bitInit; 
 	vector<bitset<MAX_SEQUENCE_POSSIBLE>>bitInitBitset;
@@ -212,6 +228,13 @@ void transactionRead(int minSupCount){
 			}
 			
 		}
+		/*if((int)S.size() > 0) {
+			cout<<"{"+s+"}"<<endl;
+			string v = "{"+s+"}";
+			for(int k=0;k<(int)bitMapRepresentationBitset[v].size();k++){
+				cout<<bitMapRepresentationBitset[v][k]<<endl;
+			}
+		}*/
 		
 		if(cnt>=minSupCount){
 			validMoves.push_back(s);
@@ -238,11 +261,12 @@ void transactionRead(int minSupCount){
 void print(){
 	//int sum=0;
 	for(int i=0;i<(int)generatedFrequentPatterns.size();i++){
-		cout<<generatedFrequentPatterns[i].p<<" ";
+		cout<<generatedFrequentPatterns[i].p<<" "<<endl;
+		/*cout<<"occurrences : "<<endl;
 		for(auto it=generatedFrequentPatterns[i].S.begin();it !=generatedFrequentPatterns[i].S.end();it++){
 			cout<<*it<<" ";
 		}
-		cout<<endl;
+		cout<<endl<<endl;*/
 	}
 	cout<<"total patterns = "<<generatedFrequentPatterns.size()<<endl;
 	return;
@@ -250,6 +274,6 @@ void print(){
 
 
 int main(void){
-	transactionRead(2);
+	transactionRead(100);
 	print();
 }

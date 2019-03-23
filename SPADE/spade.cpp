@@ -340,7 +340,7 @@ void patternMining(int minSupCount){
 				generatedFrequentPatterns.push_back(joinResults);
 			}
 				
-			if(joinResults.size() <= 1) {
+			if(joinResults.size() <= 0) {
 				break;
 			}
 		}
